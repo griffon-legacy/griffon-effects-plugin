@@ -32,7 +32,6 @@ package griffon.effects
 
 import java.awt.Component
 import java.awt.Window
-import org.pushingpixels.trident.Timeline
 
 /**
  * Effects.<p>
@@ -60,7 +59,7 @@ class Effects {
      * @param params - set of options
      * @param component - the component to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     static void shake(Map params = [:], Component component, Closure callback = null) {
         new Shake(params, component, callback).run()
     }
@@ -70,7 +69,7 @@ class Effects {
      *
      * @param component - the component to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     static void shake(Component component, Closure callback) {
         new Shake([:], component, callback).run()
     }
@@ -87,7 +86,7 @@ class Effects {
      * @param params - set of options
      * @param component - the component to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     static void move(Map params = [:], Component component, Closure callback = null) {
         new Move(params, component, callback).run()
     }
@@ -104,7 +103,7 @@ class Effects {
      * @param params - set of options
      * @param component - the component to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     static void resize(Map params = [:], Component component, Closure callback = null) {
         new Resize(params, component, callback).run()
     }
@@ -123,7 +122,7 @@ class Effects {
      * @param params - set of options
      * @param component - the component to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     static void bounds(Map params = [:], Component component, Closure callback = null) {
         new Bounds(params, component, callback).run()
     }
@@ -139,7 +138,7 @@ class Effects {
      * @param params - set of options
      * @param window - the window to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     static void opacity(Map params = [:], Window window, Closure callback = null) {
         new Opacity(params, window, callback).run()
     }
@@ -203,7 +202,7 @@ class Effects {
      * @param params - set of options
      * @param component - the component to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     static void scale(Map params = [:], Component component, Closure callback = null) {
         new Scale(params, component, callback).run()
     }
@@ -214,7 +213,7 @@ class Effects {
      * @param params - set of options
      * @param window - the window to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     static void puff(Map params = [:], Window window, Closure callback = null) {
         new Puff(params, window, callback).run()
     }
@@ -224,7 +223,7 @@ class Effects {
      *
      * @param window - the window to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     static void puff(Window window, Closure callback) {
         new Puff([:], window, callback).run()
     }
@@ -238,7 +237,7 @@ class Effects {
      * @param params - set of options
      * @param window - the window to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     static void dropOut(Map params = [:], Window window, Closure callback = null) {
         new DropOut(params, window, callback).run()
     }
@@ -252,7 +251,7 @@ class Effects {
      * @param params - set of options
      * @param window - the window to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     static void dropIn(Map params = [:], Window window, Closure callback = null) {
         new DropIn(params, window, callback).run()
     }
@@ -262,21 +261,21 @@ class Effects {
      *
      * @param effects - a list of effects to be run sequentially
      * @param callback - an optional callback to be executed at the end of the chain
-     */ 
+     */
     static void chain(List<Effect> effects, Closure callback = null) {
-        if(!effects) return
-        
+        if (!effects) return
+
         List copy = new ArrayList(effects)
         int count = copy.size()
 
         def runEffect = { Effect effect -> effect.run() }
 
         copy.eachWithIndex { effect, index ->
-            if(index < count - 1) {
+            if (index < count - 1) {
                 def oldAfterCallback = effect.afterCallback
                 def runEffectCls = runEffect.curry(copy[index + 1])
                 effect.afterCallback = {
-                    if(oldAfterCallback) oldAfterCallback()
+                    if (oldAfterCallback) oldAfterCallback()
                     runEffectCls()
                 }
             }
@@ -284,8 +283,8 @@ class Effects {
         def lastEffect = copy[-1]
         def oldAfterCallback = lastEffect.afterCallback
         lastEffect.afterCallback = {
-            if(oldAfterCallback) oldAfterCallback()
-            if(callback) callback(lastEffect.component, lastEffect.params)
+            if (oldAfterCallback) oldAfterCallback()
+            if (callback) callback(lastEffect.component, lastEffect.params)
         }
         copy[0].run()
     }

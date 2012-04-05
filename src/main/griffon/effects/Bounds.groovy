@@ -30,10 +30,11 @@
 
 package griffon.effects
 
-import java.awt.Component
-import java.awt.Rectangle
 import org.pushingpixels.trident.Timeline
 import org.pushingpixels.trident.TimelinePropertyBuilder.PropertySetter
+
+import java.awt.Component
+import java.awt.Rectangle
 
 /**
  * Moves and resizes a component.<p>
@@ -65,11 +66,11 @@ class Bounds extends AbstractBasicEffect {
      * @param params - set of options
      * @param component - the component to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     Bounds(Map params = [:], Component component, Closure callback = null) {
-        super(EffectUtil.mergeParams(params,[mode: 'relative']), component, callback)
+        super(EffectUtil.mergeParams(params, [mode: 'relative']), component, callback)
     }
- 
+
     protected void setupTimeline(Timeline timeline) {
         Rectangle origin = component.bounds
         int x = EffectUtil.toInt(params.x, 0i)
@@ -77,22 +78,22 @@ class Bounds extends AbstractBasicEffect {
         int w = EffectUtil.toInt(params.w, 0i)
         int h = EffectUtil.toInt(params.h, 0i)
         Rectangle dest = new Rectangle(
-            params.mode == 'absolute' ? x : EffectUtil.toInt(x + origin.x),
-            params.mode == 'absolute' ? y : EffectUtil.toInt(y + origin.y),
-            params.mode == 'absolute' ? w : EffectUtil.toInt(w + origin.width),
-            params.mode == 'absolute' ? h : EffectUtil.toInt(h + origin.height)
+                params.mode == 'absolute' ? x : EffectUtil.toInt(x + origin.x),
+                params.mode == 'absolute' ? y : EffectUtil.toInt(y + origin.y),
+                params.mode == 'absolute' ? w : EffectUtil.toInt(w + origin.width),
+                params.mode == 'absolute' ? h : EffectUtil.toInt(h + origin.height)
         )
 
         timeline.addPropertyToInterpolate(Timeline.property('bounds').from(origin).to(dest)
-            .setWith(
+                .setWith(
                 new PropertySetter<Rectangle>() {
                     @Override
                     public void set(Object obj, String fieldName, Rectangle value) {
                         obj.setBounds(
-                            EffectUtil.toInt(value.x),
-                            EffectUtil.toInt(value.y),
-                            EffectUtil.toInt(value.width),
-                            EffectUtil.toInt(value.height)
+                                EffectUtil.toInt(value.x),
+                                EffectUtil.toInt(value.y),
+                                EffectUtil.toInt(value.width),
+                                EffectUtil.toInt(value.height)
                         )
                     }
                 }));

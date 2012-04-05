@@ -30,9 +30,10 @@
 
 package griffon.effects
 
+import org.pushingpixels.trident.Timeline
+
 import java.awt.Component
 import java.awt.Point
-import org.pushingpixels.trident.Timeline
 
 /**
  * Moves a component.<p>
@@ -62,18 +63,18 @@ class Move extends AbstractBasicEffect {
      * @param params - set of options
      * @param component - the component to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     Move(Map params = [:], Component component, Closure callback = null) {
-        super(EffectUtil.mergeParams(params,[mode: 'relative']), component, callback)
+        super(EffectUtil.mergeParams(params, [mode: 'relative']), component, callback)
     }
- 
+
     protected void setupTimeline(Timeline timeline) {
         Point origin = component.location
         int x = EffectUtil.toInt(params.x, 0i)
         int y = EffectUtil.toInt(params.y, 0i)
         Point dest = new Point(
-            params.mode == 'absolute' ? x : EffectUtil.toInt(x + origin.x),
-            params.mode == 'absolute' ? y : EffectUtil.toInt(y + origin.y)
+                params.mode == 'absolute' ? x : EffectUtil.toInt(x + origin.x),
+                params.mode == 'absolute' ? y : EffectUtil.toInt(y + origin.y)
         )
 
         timeline.addPropertyToInterpolate(Timeline.property('location').from(origin).to(dest))

@@ -30,8 +30,9 @@
 
 package griffon.effects
 
-import java.awt.Component
 import org.pushingpixels.trident.Timeline
+
+import java.awt.Component
 import java.util.concurrent.CountDownLatch
 
 /**
@@ -107,14 +108,14 @@ abstract class AbstractEffect implements Effect {
      */
     void run() {
         Timeline timeline = EffectUtil.newTimeline(this)
-        if(beforeCallback) beforeCallback()
+        if (beforeCallback) beforeCallback()
         setupTimeline(timeline)
         EffectUtil.setupEffectCallback(this, timeline)
         EffectUtil.setupAfterCallback(this, timeline)
         CountDownLatch latch = EffectUtil.setupWaitForCompletion(this, timeline)
         doBeforePlay()
         timeline.play()
-        if(latch) latch.await()
+        if (latch) latch.await()
     }
 
     /**
@@ -123,7 +124,6 @@ abstract class AbstractEffect implements Effect {
      * @param timeline - a timeline on which properties to interpolate can be set
      */
     protected abstract void setupTimeline(Timeline timeline)
-
 
     /**
      * Last opportunity to execute custom code before the Timeline starts 

@@ -32,7 +32,7 @@ package griffon.effects
 
 import java.awt.Component
 import java.awt.Point
-import org.pushingpixels.trident.Timeline
+
 import static griffon.effects.EffectUtil.*
 
 /**
@@ -61,23 +61,23 @@ class Shake extends ChainedEffect {
      * @param params - set of options
      * @param component - the component to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     Shake(Map params = [:], Component component, Closure callback = null) {
         super(mergeParams(params), component, callback)
     }
- 
-    List<BasicEffect> makeEffects() { 
+
+    List<BasicEffect> makeEffects() {
         int distance = toInt(params.distance, 20i)
         long split = toLong(toLong(params.duration) / 10)
         Point origin = component.location
 
         List<BasicEffect> effects = [
-            new Move(x: distance,    y: 0i, duration: split,   component),
-            new Move(x: -distance*2, y: 0i, duration: split*2, component),
-            new Move(x: distance*2,  y: 0i, duration: split*2, component),
-            new Move(x: -distance*2, y: 0i, duration: split*2, component),
-            new Move(x: distance*2,  y: 0i, duration: split*2, component),
-            new Move(x: -distance,   y: 0i, duration: split,   component)
+                new Move(x: distance, y: 0i, duration: split, component),
+                new Move(x: -distance * 2, y: 0i, duration: split * 2, component),
+                new Move(x: distance * 2, y: 0i, duration: split * 2, component),
+                new Move(x: -distance * 2, y: 0i, duration: split * 2, component),
+                new Move(x: distance * 2, y: 0i, duration: split * 2, component),
+                new Move(x: -distance, y: 0i, duration: split, component)
         ]
         effects[-1].afterCallback = {
             component.setLocation(origin)

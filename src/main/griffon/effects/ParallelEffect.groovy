@@ -30,8 +30,9 @@
 
 package griffon.effects
 
-import java.awt.Component
 import org.pushingpixels.trident.Timeline
+
+import java.awt.Component
 
 /**
  * Base class for composite, parallel Effects.<p>

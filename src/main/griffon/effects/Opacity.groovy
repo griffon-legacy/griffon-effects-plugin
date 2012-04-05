@@ -30,13 +30,14 @@
 
 package griffon.effects
 
-import java.awt.Window
-import org.pushingpixels.trident.Timeline
-import org.pushingpixels.trident.Timeline.TimelineState
-import org.pushingpixels.trident.TimelinePropertyBuilder
-import org.pushingpixels.trident.TimelinePropertyBuilder.PropertySetter
 import griffon.swing.SwingUtils
 import griffon.core.UIThreadManager
+
+import org.pushingpixels.trident.Timeline
+import org.pushingpixels.trident.TimelinePropertyBuilder
+import org.pushingpixels.trident.TimelinePropertyBuilder.PropertySetter
+
+import java.awt.Window
 
 import static griffon.util.GriffonApplicationUtils.isJdk16
 import static griffon.util.GriffonApplicationUtils.isJdk17
@@ -74,28 +75,28 @@ class Opacity extends AbstractBasicEffect {
      * @param params - set of options
      * @param window - the window to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     Opacity(Map params = [:], Window window, Closure callback = null) {
-        super(EffectUtil.mergeParams(params,[from: 0.0f, to: 1.0f]), window, callback)
+        super(EffectUtil.mergeParams(params, [from: 0.0f, to: 1.0f]), window, callback)
     }
- 
+
     protected void setupTimeline(Timeline timeline) {
-        if(!SwingUtils.isTranslucencySupported()) return
+        if (!SwingUtils.isTranslucencySupported()) return
 
         TimelinePropertyBuilder p = Timeline.property('opacity')
-           .from(EffectUtil.toFloat(params.from, 0.0f))
-           .to(EffectUtil.toFloat(params.to, 1.0f))
+                .from(EffectUtil.toFloat(params.from, 0.0f))
+                .to(EffectUtil.toFloat(params.to, 1.0f))
 
-        if(isJdk17) {
+        if (isJdk17) {
             timeline.addPropertyToInterpolate(p)
-        } else if(isJdk16) {
+        } else if (isJdk16) {
             timeline.addPropertyToInterpolate(p.setWith(
-                new PropertySetter<Float>() {
-                    @Override
-                    public void set(Object obj, String fieldName, Float value) {
-                        SwingUtils.setWindowOpacity(obj, value)
-                    }
-                }));
+                    new PropertySetter<Float>() {
+                        @Override
+                        public void set(Object obj, String fieldName, Float value) {
+                            SwingUtils.setWindowOpacity(obj, value)
+                        }
+                    }));
         }
     }
 

@@ -30,13 +30,13 @@
 
 package griffon.effects
 
-import java.awt.Window
+import griffon.swing.SwingUtils
+import griffon.core.UIThreadManager
+
 import java.awt.Dimension
 import java.awt.Point
 import java.awt.Toolkit
-import org.pushingpixels.trident.Timeline
-import griffon.swing.SwingUtils
-import griffon.core.UIThreadManager
+import java.awt.Window
 
 /**
  * Fades in and moves a window.<p>
@@ -64,96 +64,96 @@ class DropIn extends ParallelEffect {
      * @param params - set of options
      * @param window - the window to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     DropIn(Map params = [:], Window window, Closure callback = null) {
         super(EffectUtil.mergeParams(params, [anchor: Anchor.TOP]), window, callback)
         def ps = paramsInternal()
         ps.anchor = Anchor.resolve(ps.anchor)
     }
- 
-    List<BasicEffect> makeEffects() { 
+
+    List<BasicEffect> makeEffects() {
         def ps = paramsInternal()
         Point origin = component.location
         Dimension size = component.getSize()
         Dimension screen = Toolkit.defaultToolkit.screenSize
 
-        if(ps.anchor == Anchor.CENTER) {
-            
+        if (ps.anchor == Anchor.CENTER) {
+
             ps.from = 0f
             ps.to = 100f
             return [
-                new Appear(ps, component),
-                new Scale(ps, component)
-            ] 
+                    new Appear(ps, component),
+                    new Scale(ps, component)
+            ]
         }
 
-        if(SwingUtils.isTranslucencySupported()) {
+        if (SwingUtils.isTranslucencySupported()) {
             SwingUtils.setWindowOpacity(component, EffectUtil.toFloat(0.0f))
         }
         ps.mode = 'absolute'
-        ps.x = (screen.width/2) - (size.width/2)
-        ps.y = (screen.height/2) - (size.height/2)
-        switch(ps.anchor) {
+        ps.x = (screen.width / 2) - (size.width / 2)
+        ps.y = (screen.height / 2) - (size.height / 2)
+        switch (ps.anchor) {
             case Anchor.TOP:
                 component.setLocation(new Point(
-                    EffectUtil.toInt(origin.x),
-                    EffectUtil.toInt(-size.height)
-                )) 
+                        EffectUtil.toInt(origin.x),
+                        EffectUtil.toInt(-size.height)
+                ))
                 break
             case Anchor.TOP_LEFT:
                 component.setLocation(new Point(
-                    EffectUtil.toInt(-size.width),
-                    EffectUtil.toInt(-size.height)
-                )) 
+                        EffectUtil.toInt(-size.width),
+                        EffectUtil.toInt(-size.height)
+                ))
                 break
             case Anchor.LEFT:
                 component.setLocation(new Point(
-                    EffectUtil.toInt(-size.width),
-                    EffectUtil.toInt(origin.y)
-                )) 
+                        EffectUtil.toInt(-size.width),
+                        EffectUtil.toInt(origin.y)
+                ))
                 break
             case Anchor.BOTTOM_LEFT:
                 component.setLocation(new Point(
-                    EffectUtil.toInt(-size.width),
-                    EffectUtil.toInt(-size.height)
-                )) 
+                        EffectUtil.toInt(-size.width),
+                        EffectUtil.toInt(-size.height)
+                ))
                 break
             case Anchor.BOTTOM:
                 component.setLocation(new Point(
-                    EffectUtil.toInt(origin.x),
-                    EffectUtil.toInt(screen.height)
-                )) 
+                        EffectUtil.toInt(origin.x),
+                        EffectUtil.toInt(screen.height)
+                ))
                 break
             case Anchor.BOTTOM_RIGHT:
                 component.setLocation(new Point(
-                    EffectUtil.toInt(screen.width),
-                    EffectUtil.toInt(screen.height)
-                )) 
+                        EffectUtil.toInt(screen.width),
+                        EffectUtil.toInt(screen.height)
+                ))
                 break
             case Anchor.RIGHT:
                 component.setLocation(new Point(
-                    EffectUtil.toInt(screen.width),
-                    EffectUtil.toInt(origin.y)
-                )) 
+                        EffectUtil.toInt(screen.width),
+                        EffectUtil.toInt(origin.y)
+                ))
                 break
             case Anchor.TOP_RIGHT:
                 component.setLocation(new Point(
-                    EffectUtil.toInt(screen.width),
-                    EffectUtil.toInt(-size.height)
-                )) 
+                        EffectUtil.toInt(screen.width),
+                        EffectUtil.toInt(-size.height)
+                ))
                 break
         }
 
         return [
-            new Appear(ps, component),
-            new Move(ps, component)
+                new Appear(ps, component),
+                new Move(ps, component)
         ]
     }
 
     protected void doBeforePlay() {
         // make sure the window is visible
         UIThreadManager.instance.executeSync {
-            if(SwingUtils.isTranslucencySupported()) {
+            if (SwingUtils.isTranslucencySupported()) {
                 SwingUtils.setWindowOpacity(component, params.from)
             }
             component.visible = true

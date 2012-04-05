@@ -30,8 +30,9 @@
 
 package griffon.effects
 
-import java.awt.Component
 import org.pushingpixels.trident.Timeline
+
+import java.awt.Component
 import java.util.concurrent.CountDownLatch
 
 /**
@@ -72,20 +73,20 @@ abstract class ChainedEffect extends AbstractEffect implements CompositeEffect {
         def runEffect = { BasicEffect effect -> effect.run() }
 
         effects.eachWithIndex { BasicEffect effect, index ->
-            if(index < count - 1) {
+            if (index < count - 1) {
                 effect.afterCallback = runEffect.curry(effects[index + 1])
             }
         }
 
-        CountDownLatch latch = waitForCompletion ? new CountDownLatch(1i) :null
+        CountDownLatch latch = waitForCompletion ? new CountDownLatch(1i) : null
         def oldAfterCallback = effects[-1].afterCallback
         effects[-1].afterCallback = {
-            if(oldAfterCallback) oldAfterCallback()
-            if(callback) callback(component, params)
-            if(afterCallback) afterCallback()
+            if (oldAfterCallback) oldAfterCallback()
+            if (callback) callback(component, params)
+            if (afterCallback) afterCallback()
             latch?.countDown()
         }
-        if(beforeCallback) beforeCallback()
+        if (beforeCallback) beforeCallback()
         doBeforePlay()
         effects[0].run()
         latch?.await()

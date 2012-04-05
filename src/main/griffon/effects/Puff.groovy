@@ -31,7 +31,6 @@
 package griffon.effects
 
 import java.awt.Window
-import org.pushingpixels.trident.Timeline
 
 /**
  * Fades and blows up a window.<p>
@@ -55,7 +54,7 @@ class Puff extends ParallelEffect {
      * @param params - set of options
      * @param window - the window to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     Puff(Map params = [:], Window window, Closure callback = null) {
         super(EffectUtil.mergeParams(params), window, callback)
         def ps = paramsInternal()
@@ -63,11 +62,11 @@ class Puff extends ParallelEffect {
         ps.to = 150f
         ps.anchor = Anchor.CENTER
     }
- 
-    List<BasicEffect> makeEffects() { 
+
+    List<BasicEffect> makeEffects() {
         [
-            new Fade(params, component),
-            new Scale(params, component)
+                new Fade(params, component),
+                new Scale(params, component)
         ]
     }
 }

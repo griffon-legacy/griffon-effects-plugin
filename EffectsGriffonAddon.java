@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Effects - Andres Almiray. All Rights Reserved.
+ * Copyright (c) 2010-2012 Effects - Andres Almiray. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -11,7 +11,7 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- *  o Neither the name of Trident Kirill Grouchnikov nor the names of
+ *  o Neither the name of Effects - Andres Almiray nor the names of
  *    its contributors may be used to endorse or promote products derived
  *    from this software without specific prior written permission.
  *
@@ -28,19 +28,14 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import griffon.util.ApplicationHolder;
+import org.codehaus.griffon.runtime.core.AbstractGriffonAddon;
+
 /**
  * @author Andres Almiray
  */
-
-// check to see if we already have a EffectsGriffonAddon
-boolean addonIsSet1
-builderConfig.each() { prefix, v ->
-    v.each { builder, views ->
-        addonIsSet1 = addonIsSet1 || 'EffectsGriffonAddon' == builder
+public class EffectsGriffonAddon extends AbstractGriffonAddon {
+    public EffectsGriffonAddon() {
+        super(ApplicationHolder.getApplication());
     }
-}
-
-if (addonIsSet1) {
-    println 'Removing EffectsGriffonAddon from Builder.groovy'
-    builderConfigFile.text = builderConfigFile.text - "root.'EffectsGriffonAddon'.addon=true\n"
 }

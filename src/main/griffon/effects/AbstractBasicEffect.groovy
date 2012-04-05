@@ -31,7 +31,6 @@
 package griffon.effects
 
 import java.awt.Component
-import org.pushingpixels.trident.Timeline
 
 /**
  * Base class for all basic Effects.<p>

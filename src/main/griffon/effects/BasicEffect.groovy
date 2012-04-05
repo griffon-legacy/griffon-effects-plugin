@@ -30,8 +30,6 @@
 
 package griffon.effects
 
-import java.awt.Component
-
 /**
  * Base class for all basic Effects.<p>
  * The following parameters are shared across all effects unless otherwise specified

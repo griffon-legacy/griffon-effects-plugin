@@ -30,11 +30,10 @@
 
 package griffon.effects
 
-import java.awt.Window
 import java.awt.Dimension
 import java.awt.Point
 import java.awt.Toolkit
-import org.pushingpixels.trident.Timeline
+import java.awt.Window
 
 /**
  * Fades and moves a window.<p>
@@ -62,44 +61,44 @@ class DropOut extends ParallelEffect {
      * @param params - set of options
      * @param window - the window to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     DropOut(Map params = [:], Window window, Closure callback = null) {
         super(EffectUtil.mergeParams(params, [anchor: Anchor.BOTTOM]), window, callback)
         def ps = paramsInternal()
         ps.anchor = Anchor.resolve(ps.anchor)
     }
- 
-    List<BasicEffect> makeEffects() { 
+
+    List<BasicEffect> makeEffects() {
         def ps = paramsInternal()
         Point origin = component.location
         Dimension size = component.getSize()
         Dimension screen = Toolkit.defaultToolkit.screenSize
 
-        if(ps.anchor == Anchor.CENTER) {
+        if (ps.anchor == Anchor.CENTER) {
             ps.from = 100f
             ps.to = 0f
             return [
-                new Fade(ps, component),
-                new Scale(ps, component)
-            ] 
+                    new Fade(ps, component),
+                    new Scale(ps, component)
+            ]
         }
 
         ps.mode = 'absolute'
-        switch(ps.anchor) {
+        switch (ps.anchor) {
             case Anchor.TOP:
                 ps.x = origin.x
-                ps.y = -(size.height) 
+                ps.y = -(size.height)
                 break
             case Anchor.TOP_LEFT:
-                ps.x = -(size.width) 
-                ps.y = -(size.height) 
+                ps.x = -(size.width)
+                ps.y = -(size.height)
                 break
             case Anchor.LEFT:
-                ps.x = -(size.width) 
+                ps.x = -(size.width)
                 ps.y = origin.y
                 break
             case Anchor.BOTTOM_LEFT:
-                ps.x = -(size.width) 
+                ps.x = -(size.width)
                 ps.y = screen.height
                 break
             case Anchor.BOTTOM:
@@ -116,13 +115,13 @@ class DropOut extends ParallelEffect {
                 break
             case Anchor.TOP_RIGHT:
                 ps.x = screen.width
-                ps.y = -(size.height) 
+                ps.y = -(size.height)
                 break
         }
 
         return [
-            new Fade(ps, component),
-            new Move(ps, component)
+                new Fade(ps, component),
+                new Move(ps, component)
         ]
     }
 }

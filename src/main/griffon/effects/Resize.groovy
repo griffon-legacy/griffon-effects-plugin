@@ -30,9 +30,10 @@
 
 package griffon.effects
 
+import org.pushingpixels.trident.Timeline
+
 import java.awt.Component
 import java.awt.Dimension
-import org.pushingpixels.trident.Timeline
 
 /**
  * Resizes a component.<p>
@@ -62,18 +63,18 @@ class Resize extends AbstractBasicEffect {
      * @param params - set of options
      * @param component - the component to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     Resize(Map params = [:], Component component, Closure callback = null) {
-        super(EffectUtil.mergeParams(params,[mode: 'relative']), component, callback)
+        super(EffectUtil.mergeParams(params, [mode: 'relative']), component, callback)
     }
- 
+
     protected void setupTimeline(Timeline timeline) {
         Dimension origin = component.getSize()
         int w = EffectUtil.toInt(params.w, 0i)
         int h = EffectUtil.toInt(params.h, 0i)
         Dimension dest = new Dimension(
-            params.mode == 'absolute' ? w : EffectUtil.toInt(w + origin.width),
-            params.mode == 'absolute' ? h : EffectUtil.toInt(h + origin.height)
+                params.mode == 'absolute' ? w : EffectUtil.toInt(w + origin.width),
+                params.mode == 'absolute' ? h : EffectUtil.toInt(h + origin.height)
         )
 
         timeline.addPropertyToInterpolate(Timeline.property('size').from(origin).to(dest))

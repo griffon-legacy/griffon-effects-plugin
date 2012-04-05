@@ -86,8 +86,8 @@ enum Anchor {
      * @return Anchor.CENTER always
      */
     static Anchor resolve(String value) {
-        value = value.toUpperCase().replace(' ','_')
-        switch(value) {
+        value = value.toUpperCase().replace(' ', '_')
+        switch (value) {
             case 'NORTH': return TOP
             case 'SOUTH': return BOTTOM
             case 'WEST': return LEFT

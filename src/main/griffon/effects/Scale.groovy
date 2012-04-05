@@ -30,12 +30,13 @@
 
 package griffon.effects
 
-import java.awt.Component
-import java.awt.Rectangle
 import org.pushingpixels.trident.Timeline
 import org.pushingpixels.trident.Timeline.TimelineState
 import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter
-import org.pushingpixels.trident.TimelinePropertyBuilder.PropertySetter
+
+import java.awt.Component
+import java.awt.Rectangle
+
 import static griffon.effects.EffectUtil.*
 
 /**
@@ -63,11 +64,11 @@ import static griffon.effects.EffectUtil.*
  */
 class Scale extends AbstractBasicEffect {
     private static final Map DEFAULT_PARAMS = [
-        scaleX: true,
-        scaleY: true,
-        from: 100i,
-        to: 0i,
-        anchor: Anchor.CENTER
+            scaleX: true,
+            scaleY: true,
+            from: 100i,
+            to: 0i,
+            anchor: Anchor.CENTER
     ]
 
     /**
@@ -76,13 +77,13 @@ class Scale extends AbstractBasicEffect {
      * @param params - set of options
      * @param component - the component to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     Scale(Map params = [:], Component component, Closure callback = null) {
         super(mergeParams(params, DEFAULT_PARAMS), component, callback)
         def ps = paramsInternal()
-        ps.anchor = Anchor.resolve(ps.anchor) 
+        ps.anchor = Anchor.resolve(ps.anchor)
     }
- 
+
     protected void setupTimeline(Timeline timeline) {
         timeline.addCallback(new Scaler())
     }
@@ -95,18 +96,18 @@ class Scale extends AbstractBasicEffect {
             def ps = paramsInternal()
             float to = toFloat(ps.to)
             float from = toFloat(ps.from)
-            factor = toFloat((to - from)/100)
+            factor = toFloat((to - from) / 100)
             origin = getComponent().bounds
         }
 
-	@Override
-	public void onTimelinePulse(float durationFraction, float timelinePosition) {
+        @Override
+        public void onTimelinePulse(float durationFraction, float timelinePosition) {
             scale(timelinePosition)
         }
 
-	public void onTimelineStateChanged(TimelineState oldState,
-			TimelineState newState, float durationFraction,
-			float timelinePosition) {
+        public void onTimelineStateChanged(TimelineState oldState,
+                                           TimelineState newState, float durationFraction,
+                                           float timelinePosition) {
             if (newState == TimelineState.DONE) {
                 scale(1.0f)
             }
@@ -116,52 +117,55 @@ class Scale extends AbstractBasicEffect {
             Map ps = getParams()
             float to = toFloat(ps.to)
             float from = toFloat(ps.from)
-            float currentScale = toFloat((from/100) + (factor * position))
+            float currentScale = toFloat((from / 100) + (factor * position))
             float w = ps.scaleX ? origin.width * currentScale : origin.width
             float h = ps.scaleY ? origin.height * currentScale : origin.height
 
-            switch(ps.anchor) {
+            switch (ps.anchor) {
                 case Anchor.TOP_LEFT:
-                   newBounds(origin.x, origin.y, w, h) 
-                   break
+                    newBounds(origin.x, origin.y, w, h)
+                    break
                 case Anchor.TOP:
-                   newBounds(centerX(w), origin.y, w, h) 
-                   break
+                    newBounds(centerX(w), origin.y, w, h)
+                    break
                 case Anchor.TOP_RIGHT:
-                   newBounds(rightX(w), origin.y, w, h) 
-                   break
+                    newBounds(rightX(w), origin.y, w, h)
+                    break
                 case Anchor.LEFT:
-                   newBounds(origin.x, centerY(h), w, h) 
-                   break
+                    newBounds(origin.x, centerY(h), w, h)
+                    break
                 case Anchor.CENTER:
-                   newBounds(centerX(w), centerY(h), w, h) 
-                   break
+                    newBounds(centerX(w), centerY(h), w, h)
+                    break
                 case Anchor.RIGHT:
-                   newBounds(rightX(w), centerY(h), w, h) 
-                   break
+                    newBounds(rightX(w), centerY(h), w, h)
+                    break
                 case Anchor.BOTTOM_LEFT:
-                   newBounds(origin.x, bottomY(h), w, h) 
-                   break
+                    newBounds(origin.x, bottomY(h), w, h)
+                    break
                 case Anchor.BOTTOM:
-                   newBounds(centerX(w), bottomY(h), w, h) 
-                   break
+                    newBounds(centerX(w), bottomY(h), w, h)
+                    break
                 case Anchor.BOTTOM_RIGHT:
-                   newBounds(rightX(w), bottomY(h), w, h) 
-                   break
+                    newBounds(rightX(w), bottomY(h), w, h)
+                    break
             }
-	}
+        }
 
-        private centerX(w) { origin.x + (origin.width - w)/2 }
+        private centerX(w) { origin.x + (origin.width - w) / 2 }
+
         private rightX(w) { origin.x + origin.width - w }
-        private centerY(h) { origin.y + (origin.height - h)/2 }
+
+        private centerY(h) { origin.y + (origin.height - h) / 2 }
+
         private bottomY(h) { origin.y + origin.height - h }
 
         private void newBounds(x, y, w, h) {
             getComponent().setBounds(
-                toInt(x),
-                toInt(y),
-                toInt(w),
-                toInt(h)
+                    toInt(x),
+                    toInt(y),
+                    toInt(w),
+                    toInt(h)
             )
         }
     }

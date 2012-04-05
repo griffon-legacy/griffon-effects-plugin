@@ -32,9 +32,10 @@ package griffon.effects
 
 import org.pushingpixels.trident.Timeline
 import org.pushingpixels.trident.Timeline.TimelineState
-import org.pushingpixels.trident.ease.Linear
-import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter
 import org.pushingpixels.trident.callback.TimelineCallbackAdapter
+import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter
+import org.pushingpixels.trident.ease.Linear
+
 import java.util.concurrent.CountDownLatch
 
 /**
@@ -42,21 +43,21 @@ import java.util.concurrent.CountDownLatch
  */
 final class EffectUtil {
     private static final Map DEFAULT_PARAMS = [
-        duration: 500l,
-        delay: 0l,
-        ease: new Linear(),
-        from: 0.0f,
-        to: 1.0f,
-        x: 0i,
-        y: 0i,
-        w: 0i,
-        h: 0i
+            duration: 500l,
+            delay: 0l,
+            ease: new Linear(),
+            from: 0.0f,
+            to: 1.0f,
+            x: 0i,
+            y: 0i,
+            w: 0i,
+            h: 0i
     ]
 
     protected static final Closure NO_CALLBACK = { t, p -> }
 
     static String toString(Effect effect) {
-        [effect.class.simpleName,'[params:',effect.params,']'].join('')
+        [effect.class.simpleName, '[params:', effect.params, ']'].join('')
     }
 
     /**
@@ -66,11 +67,11 @@ final class EffectUtil {
      * @param callback a Closure. Will be ignored if null.
      */
     static void setupCallback(Timeline timeline, final Closure callback) {
-        if(callback) {
+        if (callback) {
             timeline.addCallback(new UIThreadTimelineCallbackAdapter() {
                 @Override
                 public void onTimelineStateChanged(TimelineState oldState,
-                      TimelineState newState, float durationFraction, float timelinePosition) {
+                                                   TimelineState newState, float durationFraction, float timelinePosition) {
                     if (newState == TimelineState.DONE) {
                         callback()
                     }
@@ -86,11 +87,11 @@ final class EffectUtil {
      * @param timeline the target Timeline.
      */
     static void setupEffectCallback(final Effect effect, Timeline timeline) {
-        if(effect.callback && effect.callback != NO_CALLBACK) {
+        if (effect.callback && effect.callback != NO_CALLBACK) {
             timeline.addCallback(new UIThreadTimelineCallbackAdapter() {
                 @Override
                 public void onTimelineStateChanged(TimelineState oldState,
-                      TimelineState newState, float durationFraction, float timelinePosition) {
+                                                   TimelineState newState, float durationFraction, float timelinePosition) {
                     if (newState == TimelineState.DONE) {
                         effect.callback(effect.component, effect.params)
                     }
@@ -106,11 +107,11 @@ final class EffectUtil {
      * @param timeline the target Timeline.
      */
     static void setupAfterCallback(final Effect effect, Timeline timeline) {
-        if(effect.afterCallback) {
+        if (effect.afterCallback) {
             timeline.addCallback(new UIThreadTimelineCallbackAdapter() {
                 @Override
                 public void onTimelineStateChanged(TimelineState oldState,
-                      TimelineState newState, float durationFraction, float timelinePosition) {
+                                                   TimelineState newState, float durationFraction, float timelinePosition) {
                     if (newState == TimelineState.DONE) {
                         effect.afterCallback()
                     }
@@ -128,12 +129,12 @@ final class EffectUtil {
      */
     static CountDownLatch setupWaitForCompletion(final Effect effect, Timeline timeline) {
         final CountDownLatch latch = null
-        if(effect.waitForCompletion) {
+        if (effect.waitForCompletion) {
             latch = new CountDownLatch(1i)
             timeline.addCallback(new TimelineCallbackAdapter() {
                 @Override
                 public void onTimelineStateChanged(TimelineState oldState,
-                      TimelineState newState, float durationFraction, float timelinePosition) {
+                                                   TimelineState newState, float durationFraction, float timelinePosition) {
                     if (newState == TimelineState.DONE) {
                         latch.countDown()
                     }
@@ -158,52 +159,52 @@ final class EffectUtil {
     }
 
     static Map mergeParams(Map params, Map overrides = [:]) {
-        return [*:DEFAULT_PARAMS, *:overrides, *:params]
+        return [*: DEFAULT_PARAMS, *: overrides, *: params]
     }
 
     static double toDouble(value, double defaultValue = 0.0d) {
-        if(value instanceof Number) {
+        if (value instanceof Number) {
             return value.doubleValue()
         } else {
             try {
                 return Double.parseDouble(String.valueOf(value))
-            } catch(NumberFormatException nfe) {
+            } catch (NumberFormatException nfe) {
                 return defaultValue
             }
         }
     }
 
     static float toFloat(value, float defaultValue = 0.0f) {
-        if(value instanceof Number) {
+        if (value instanceof Number) {
             return value.floatValue()
         } else {
             try {
                 return Float.parseFloat(String.valueOf(value))
-            } catch(NumberFormatException nfe) {
+            } catch (NumberFormatException nfe) {
                 return defaultValue
             }
         }
     }
 
     static int toInt(value, int defaultValue = 0i) {
-        if(value instanceof Number) {
+        if (value instanceof Number) {
             return value.intValue()
         } else {
             try {
                 return Integer.parseInt(String.valueOf(value))
-            } catch(NumberFormatException nfe) {
+            } catch (NumberFormatException nfe) {
                 return defaultValue
             }
         }
     }
 
     static long toLong(value, long defaultValue = 0l) {
-        if(value instanceof Number) {
+        if (value instanceof Number) {
             return value.longValue()
         } else {
             try {
                 return Long.parseLong(String.valueOf(value))
-            } catch(NumberFormatException nfe) {
+            } catch (NumberFormatException nfe) {
                 return defaultValue
             }
         }

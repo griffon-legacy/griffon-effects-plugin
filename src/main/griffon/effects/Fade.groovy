@@ -30,10 +30,12 @@
 
 package griffon.effects
 
-import java.awt.Window
 import griffon.swing.SwingUtils
 import griffon.core.UIThreadManager
+
 import org.pushingpixels.trident.Timeline
+
+import java.awt.Window
 
 /**
  * Fades a window.<p>
@@ -58,11 +60,11 @@ class Fade extends Opacity {
      * @param params - set of options
      * @param window - the window to animate
      * @param callback - an optional callback to be executed at the end of the animation
-     */ 
+     */
     Fade(Map params = [:], Window window, Closure callback = null) {
         super(EffectUtil.mergeParams(params), window, callback)
         def ps = paramsInternal()
-        if(SwingUtils.isTranslucencySupported()) {
+        if (SwingUtils.isTranslucencySupported()) {
             ps.from = SwingUtils.getWindowOpacity(window) ?: 1.0f
         } else {
             ps.from = 1.0f
@@ -80,7 +82,7 @@ class Fade extends Opacity {
     protected void doBeforePlay() {
         // make sure the window is visible
         UIThreadManager.instance.executeSync {
-            if(SwingUtils.isTranslucencySupported()) {
+            if (SwingUtils.isTranslucencySupported()) {
                 SwingUtils.setWindowOpacity(component, params.from)
             }
             component.visible = true
